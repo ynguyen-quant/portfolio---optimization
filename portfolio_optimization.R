@@ -4,7 +4,6 @@ library(xts)
 library(PerformanceAnalytics)
 library(MASS)
 library(PortfolioAnalytics)
-library(readxl)
 
 data <- read_excel("C:/data.xlsx")
 head(data)
@@ -23,12 +22,12 @@ returns_daily
 returns_daily_clean <- na.omit(returns_daily)
 returns_daily_clean
 
-#Hiệp phương sai (các phần tử còn lại) đo lường xu hướng mà hai cổ phiếu di
-chuyển cùng nhau.
+#Hiệp phương sai (các phần tử còn lại) đo lường xu hướng mà hai cổ phiếu dichuyển cùng nhau.
 cov_matrix <- cov(returns_daily_clean)
 cov_matrix
 
 #Mô phỏng Monte Carlo (dựa trên dữ liệu thật)
+set.seed(123) 
 loi_nhuan_trung_binh <- colMeans(returns_daily_clean)
 so_lan_mo_phong <- 10000
 n <- ncol(returns_daily_clean)
@@ -91,7 +90,8 @@ pspec <- add.objective(portfolio = pspec, type = "risk", name = "StdDev")
 pspec <- add.objective(portfolio = pspec, type = "return", name = "mean")
                           
 # Chạy mô phỏng để vẽ đường biên hiệu quả
- ef_random <- optimize.portfolio(R = returns_daily_clean,
+set.seed(123) 
+ef_random <- optimize.portfolio(R = returns_daily_clean,
                                     portfolio = pspec,
                                     optimize_method = "random",
                                     search_size = 5000,
